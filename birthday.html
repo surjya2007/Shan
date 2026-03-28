@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 🎉</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+  color: white;
+  text-align: center;
+}
+
+/* 💖 glow overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255,182,193,0.3), transparent),
+              radial-gradient(circle at 70% 70%, rgba(255,105,180,0.2), transparent);
+  z-index: -1;
+}
+
+/* 🎬 background blur */
+.bg-blur {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(30px) brightness(0.6);
+  z-index: -2;
+  transition: background-image 1s ease-in-out;
+}
+
+/* title */
+h1 {
+  font-size: 2.5rem;
+  margin-top: 20px;
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px #fff; }
+  to { text-shadow: 0 0 30px #ff00ff, 0 0 60px #00ffff; }
+}
+
+/* slideshow */
+.slideshow-container {
+  position: relative;
+  width: 90%;
+  max-width: 380px;
+  height: 70vh;
+  margin: 20px auto;
+  border-radius: 25px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 40px rgba(255,255,255,0.3);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.slide img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* buttons */
+.btn {
+  margin: 10px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.9);
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+  background: #ffccff;
+}
+
+/* typing */
+#typing {
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
+
+/* 💖 HEART FIX */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 20px;
+  animation: floatHeart linear infinite;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 10px pink);
+  z-index: 10;
+  pointer-events: none;
+}
+
+@keyframes floatHeart {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120vh);
+    opacity: 0;
+  }
+}
+
+/* secret */
+.secret {
+  display: none;
+  margin-top: 15px;
+  font-size: 1.3rem;
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-blur" id="bg"></div>
+
+<h1>🎉 Happy Birthday 🎉</h1>
+<p>May your life sparkle brighter than these lights ✨</p>
+
+<div id="typing"></div>
+
+<!-- 🎬 slideshow -->
+<div class="slideshow-container">
+  <div class="slide active"><img src="photo1.jpeg"></div>
+  <div class="slide"><img src="photo2.jpeg"></div>
+  <div class="slide"><img src="photo3.jpeg"></div>
+  <div class="slide"><img src="photo4.jpeg"></div>
+  <div class="slide"><img src="photo5.jpeg"></div>
+  <div class="slide"><img src="photo6.jpeg"></div>
+  <div class="slide"><img src="photo7.jpeg"></div>
+  <div class="slide"><img src="photo8.jpeg"></div>
+</div>
+
+<button class="btn" onclick="openCake()">🎂 Cut the Cake</button>
+<button class="btn" onclick="playMusic()">🎵 Play Music</button>
+<button class="btn" onclick="showSecret()">💌 Surprise</button>
+
+<div class="secret" id="secretMsg">
+💞 "If smiles were stars, you'd own the entire sky." 💞
+</div>
+
+<audio id="music" src="audio.mp3"></audio>
+
+<script>
+// cake
+function openCake() {
+  window.location.href = "birthday-cake.html";
+}
+
+// music
+function playMusic() {
+  let music = document.getElementById("music");
+
+  // only play if paused
+  if (music.paused) {
+    music.play().catch(() => {
+      alert("Click again to play 🎵");
+    });
+  }
+}
+// slideshow
+let slides = document.querySelectorAll(".slide");
+let bg = document.getElementById("bg");
+let index = 0;
+
+bg.style.backgroundImage = `url(${slides[0].querySelector("img").src})`;
+
+function showSlides() {
+  slides.forEach(s => s.classList.remove("active"));
+  index = (index + 1) % slides.length;
+  slides[index].classList.add("active");
+
+  let img = slides[index].querySelector("img").src;
+  bg.style.backgroundImage = `url(${img})`;
+}
+
+setInterval(showSlides, 3000);
+
+// typing
+let text = "✨ Wishing you love, laughter, and endless happiness Happy birthday, my brother from another lifetime—the chaos partner, the calm in my storm.Life feels lighter with you in it, louder with laughter,and I’m damn lucky to call you mine. 🎂✨✨";
+let i = 0;
+function typeWriter() {
+  if (i < text.length) {
+    document.getElementById("typing").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeWriter, 50);
+  }
+}
+typeWriter();
+
+// 💖 hearts FIXED
+setInterval(() => {
+  let heart = document.createElement("div");
+  heart.className = "heart";
+
+  const hearts = ["💖","💗","💓","💞","💕","❤️"];
+  heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (6 + Math.random() * 4) + "s";
+
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 9000);
+}, 400);
+
+// secret
+function showSecret() {
+  document.getElementById("secretMsg").style.display = "block";
+}
+</script>
+
+</body>
+</html>
